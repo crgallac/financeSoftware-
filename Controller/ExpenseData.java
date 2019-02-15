@@ -34,5 +34,9 @@ public class ExpenseData {
     public void add(Expense expense){
         this.expenseList.add(expense);
     }
+
+    public int getSize(){
+        return this.expenseList.size();
+    }
 }
 
