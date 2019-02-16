@@ -6,7 +6,9 @@ public class Purchase extends AtomicExpense{
 	private String location; 
 	private String additionalDetials; 
 	
-	
+	public Purchase() {
+		this.expenseType = ExpenseType.PURCHASE; 
+	}
 	public void setName  (String name) {
 		this.name = name; 
 	}

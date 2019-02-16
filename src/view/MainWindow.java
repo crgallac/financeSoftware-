@@ -11,17 +11,19 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JTextField;
 
 
-public class MainWindow {
+public class MainWindow implements Observer {
 	private JFrame ExpenseList = new JFrame ("Expense Tracker");
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void createMainWindow() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -67,7 +69,15 @@ public class MainWindow {
 		
 		
 		}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO HERE LAURA NEEDS TO UPDATE WHAT IS DISPLAYED INSIDE THE LIST
+		
 	}
+	
+
+}
 
 
 

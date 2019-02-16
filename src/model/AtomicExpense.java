@@ -9,6 +9,7 @@ public abstract class AtomicExpense {
 	protected boolean paymentStatus; 
 	protected Date dateOfExpense;
 	protected PaymentType paymentType; 
+	protected ExpenseType expenseType; 
 	
 	public void setAmount(double amount) {
 		this.amount = amount; 
@@ -17,7 +18,7 @@ public abstract class AtomicExpense {
 	public void setExpenseName(String expenseName) {
 		this.expenseName = expenseName; 
 	}
-	public void setAmount(boolean paymentStatus) {
+	public void setPaid(boolean paymentStatus) {
 		this.paymentStatus = paymentStatus; 
 	}
 	public void setAmount(Date dateOfExpense) {
