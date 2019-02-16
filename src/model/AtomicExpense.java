@@ -7,7 +7,8 @@ public abstract class AtomicExpense {
 	protected double amount = 0.0f; 
 	protected String expenseName; 
 	protected boolean paymentStatus; 
-	protected Date dateOfExpense; 
+	protected Date dateOfExpense;
+	protected PaymentType paymentType; 
 	
 	public void setAmount(double amount) {
 		this.amount = amount; 
@@ -21,6 +22,10 @@ public abstract class AtomicExpense {
 	}
 	public void setAmount(Date dateOfExpense) {
 		this.dateOfExpense = dateOfExpense; 
+	}
+	
+	public void setPaymentType  (PaymentType paymentType) {
+		this.paymentType = paymentType; 
 	}
 	
 	public double getAmount() {
@@ -38,6 +43,13 @@ public abstract class AtomicExpense {
 	public Date getDate() {
 		return dateOfExpense; 
 	}
+	
+	public PaymentType getPaymentType() {
+		return paymentType; 
+	}
+	
+
+
 	
 	
 

@@ -1,5 +1,7 @@
 package model;
 
-public class ExpenseType {
+public enum ExpenseType {
+	
+	BILL, PURCHASE
 
 }
