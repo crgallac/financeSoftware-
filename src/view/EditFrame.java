@@ -1,5 +1,3 @@
-package view;
-
 import javax.swing.*;
 
 import java.awt.event.MouseAdapter;
@@ -7,14 +5,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SecondFrame {
-	private JFrame addExp = new JFrame("Add an expense");
+public class EditFrame {
+	
+	private JFrame addExp = new JFrame("Edit an expense");
 	private JTextField textField;
 	private JTextField textField_1;
 	
-	public SecondFrame() {
+	public EditFrame() {
 	
-		addExp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//addExp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addExp.setSize(300,300);
 		addExp.getContentPane().setLayout(null);
 		
