@@ -38,5 +38,22 @@ public class ExpenseData {
     public int getSize(){
         return this.expenseList.size();
     }
+    public String[][] to2dArray(){
+        String[][] data = {};
+        int size=this.expenseList.size();
+        for (int i = 0; i < size; i++) {
+            Expense current = this.getByRow(i);
+            data[i][0]=current.getName();// 1st column reserved for name
+            data[i][1]=Double.toString(current.getPrice());// 2st column reserved for Price
+            data[i][2]=current.getType();// 3st column reserved for Type
+            if (current.getPaid()==true) {//4st column reserved for paid
+                data[i][3] = "Paid";
+            }
+            else {
+                data[i][3]="Unpaid";
+            }
+        }
+        return data;
+    }
 }
 
