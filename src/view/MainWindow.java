@@ -102,7 +102,7 @@ public class MainWindow implements Observer {
 		lblAmount.setBounds(20, 90, 61, 16);
 		ExpenseList.getContentPane().add(lblAmount);
 
-		String[] categories = {"Restaurant", "Rent", "Utilities", "Car", "Groceries", "Miscellaneous"};
+		String[] categories = {"Purchase", "Bill"};
 
 		JComboBox comboBox = new JComboBox(categories);
 		comboBox.setBounds(141, 120, 130, 27);
@@ -120,6 +120,8 @@ public class MainWindow implements Observer {
 		String columnNames[]={"Name", "Price", "Type","Paid"};
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		JTable table = new JTable( model );
+		//JScrollPane scrollPane = new JScrollPane( table ); 
+		//ExpenseList.add( scrollPane );
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setBounds(300,50,400,400);
 		ExpenseList.getContentPane().add(table);
@@ -139,11 +141,34 @@ public class MainWindow implements Observer {
 				}
 			}
 		});
+		
+		
+//		btnEditItem.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent edit) {
+//				readExpenseName();
+//				readAmount();
+//				type = (String) (comboBox.getSelectedItem());
+//				validationChecks();
+//				paid = chckbxExpensePaid.isSelected();
+//				System.out.println(expenseName+amount+type+paid);//debug:checking user input data in console
+//				int rowToEdit = table.getSelectedRow();
+//				if(rowToEdit <0){
+//					JOptionPane.showMessageDialog(null, "No file is selected!");
+//				}
+//				else if(isDataValid == true) {
+//					DefaultTableModel model = (DefaultTableModel) table.getModel();
+//					model.setValueat(new Object[]{expenseName, amount, paid}, )
+//				
+//				}
+//			}
+//		});
+		
+
 
 		btnDeleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent del) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				int rowToDel=table.getSelectedRow();
+				int rowToDel = table.getSelectedRow();
 				if(rowToDel<0){
 					JOptionPane.showMessageDialog(null, "No file is selected!");
 				}
@@ -158,11 +183,10 @@ public class MainWindow implements Observer {
 
 
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
+	//@Override
+	//public void update(Observable arg0, Object arg1) {
 		// TODO HERE LAURA NEEDS TO UPDATE WHAT IS DISPLAYED INSIDE THE LIST
-	}
-
+		
 
 	private void validationChecks() {
 		this.isDataValid = false;
@@ -211,15 +235,18 @@ public class MainWindow implements Observer {
 
 
 
-
-
-
 	private boolean isNumeric(String strNum) {
 		return strNum.matches("-?\\d+(\\.\\d+)?");
 
 	}
+	
+//	public boolean isCellEditable(int row, int col) {
+//    if (col < 2) {
+//        return false;
+//    } else {
+//        return true;
+//    }
+//}
 
 }
-
-
 
