@@ -21,7 +21,11 @@ import java.awt.event.*;
 
 
 
-
+/**
+ * The view class for the MVC model. This displays the graphical user interface and handles inputs to the game controller. 
+ * @version     1
+ * @since       1          
+ */
 public class MainWindow implements Observer {
 
 	private  AppController appController; 
