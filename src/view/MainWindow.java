@@ -2,7 +2,6 @@ package view;
 
 
 
-
 import java.awt.EventQueue;
 import java.awt.Label;
 import javax.swing.table.DefaultTableModel;
@@ -72,15 +71,18 @@ public class MainWindow implements Observer {
 	 */
 	private void initialize() {
 
+		
+		
 		ExpenseListFrame = new JFrame();
 		ExpenseListFrame.setBounds(100, 100, 800, 600);
 		ExpenseListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ExpenseListFrame.getContentPane().setLayout(null);
-		
 
 		
 		JButton btnAddItem = new JButton("Add Item");
 		btnAddItem.setBounds(10, 520, 120, 30);
+
+
 
 		ExpenseListFrame.getContentPane().add(btnAddItem);
 
@@ -115,15 +117,15 @@ public class MainWindow implements Observer {
 		JLabel lblExpenseName = new JLabel("Expense Name");
 		lblExpenseName.setBounds(20, 52, 93, 16);
 		ExpenseListFrame.getContentPane().add(lblExpenseName);
-		
-		
-	
+
 		JLabel lblAmount = new JLabel("Amount");
 		lblAmount.setBounds(20, 90, 61, 16);
 		ExpenseListFrame.getContentPane().add(lblAmount);
 
-	
+
 		String[] categories = {"Purchase", "Bill"};
+
+
 		JComboBox comboBox = new JComboBox(categories);
 		comboBox.setBounds(141, 120, 130, 27);
 		ExpenseListFrame.getContentPane().add(comboBox);
@@ -148,6 +150,7 @@ public class MainWindow implements Observer {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setBounds(300,50,400,400);
 		ExpenseListFrame.getContentPane().add(table);
+
 		
 		table.setPreferredScrollableViewportSize(new Dimension(450,63));
         table.setFillsViewportHeight(true);
@@ -173,6 +176,8 @@ public class MainWindow implements Observer {
 		
 	
 
+
+
 		btnAddItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent add) {
 				readExpenseName();
@@ -181,7 +186,7 @@ public class MainWindow implements Observer {
 				validationChecks();
 				paid = chckbxExpensePaid.isSelected();
 				//System.out.println(expenseName+amount+type+paid);//debug:checking user input data in console
-		
+
 				
 				if (isDataValid == true) {
 					
@@ -207,7 +212,8 @@ public class MainWindow implements Observer {
 				}
 			}
 		});
-	
+
+		
 		btnEditItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent edit) {
 				readExpenseName();
@@ -226,12 +232,9 @@ public class MainWindow implements Observer {
 					
 					model.removeRow(rowToEdit);
 					model.insertRow(rowToEdit,  new Object[]{appController.getExpenseList().getByRow(rowToEdit).getExpenseName(), appController.getExpenseList().getByRow(rowToEdit).getAmount(),ExpenseType.TypeToString(appController.getExpenseList().getByRow(rowToEdit).getExpenseType()),appController.getExpenseList().getByRow(rowToEdit).getPaymentStatus()});
-
 				}
 			}
 		});
-
-		
 		
 		btnMarkPaid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent pay) {
@@ -341,11 +344,13 @@ public class MainWindow implements Observer {
 	}
 
 
+
 	/*
 	 * Validates whether the string is numeric
 	 * @param strNum the string to check if it is a number
 	 * 
 	 */
+
 	private boolean isNumeric(String strNum) {
 		return strNum.matches("-?\\d+(\\.\\d+)?");
 
