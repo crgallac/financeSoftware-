@@ -28,6 +28,9 @@ public abstract class AtomicExpense {
 	public void setPaymentType  (PaymentType paymentType) {
 		this.paymentType = paymentType; 
 	}
+	public void setExpenseType  (ExpenseType expenseType) {
+		this.expenseType = expenseType; 
+	}
 	
 	public double getAmount() {
 		return amount; 
@@ -35,6 +38,10 @@ public abstract class AtomicExpense {
 	
 	public String getExpenseName() {
 		return expenseName; 
+	}
+	
+	public ExpenseType getExpenseType() {
+		return expenseType; 
 	}
 	
 	public boolean getPaymentStatus() {

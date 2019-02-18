@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 
 
@@ -27,6 +28,8 @@ public class ExpenseList extends Observable{
 		//for editor button, changing content of a unit of expense by row index
 		    public void setByRow(int rowId,AtomicExpense expense){
 		        this.expenseList.set(rowId,expense);
+		        this.setChanged();
+		        this.notifyObservers(this);
 		    }
 		//for delete button, remove expense by row index
 		    public void deleteByRow(int rowId){
@@ -43,6 +46,19 @@ public class ExpenseList extends Observable{
 
 		    public int getSize(){
 		        return this.expenseList.size();
+		    }
+		    
+		    public void printList(){
+		        
+		    	for (AtomicExpense ex : expenseList) {
+		    		
+		    		System.out.print(ex.expenseName + ", ");
+		    		System.out.print(ex.amount + ", ");
+		    		System.out.print(ex.expenseType.toString() + ", ");
+		    		System.out.println(ex.paymentStatus);
+		    		
+		    	}
+		    
 		    }
 	
 	

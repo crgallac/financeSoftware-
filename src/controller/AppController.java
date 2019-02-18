@@ -17,7 +17,7 @@ public class AppController{
     	
     	expenseData = new ExpenseList();
     	expenseFactory = new ExpenseFactory(); 
-    	view  = new MainWindow();
+    	view  = new MainWindow(this);
     	
     	
     	expenseData.addObserver(view);
@@ -28,7 +28,7 @@ public class AppController{
     public void startApplication() {
         // View the application's GUI
         
-        view.createMainWindow();
+        view.createMainWindow(view);
     }
     
   
@@ -92,6 +92,8 @@ public class AppController{
         this.expenseData.add(expense);
      
     }
+    
+
     //need row index from UI
     public void edit(int rowID, String name,double amount,ExpenseType type,boolean paid){
         AtomicExpense expense= expenseFactory.createExpense(type);//create a new expense with all information from  window 2
@@ -106,5 +108,12 @@ public class AppController{
     public void delete(int rowID){
         this.expenseData.deleteByRow(rowID);
   
+    }
+    
+    
+    //for window 2, put all data together to form a unit of expense, then add it to the list
+    public ExpenseList getExpenseList(){
+
+    	return this.expenseData;
     }
 }
