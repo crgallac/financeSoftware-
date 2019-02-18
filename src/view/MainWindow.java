@@ -47,8 +47,9 @@ public class MainWindow implements Observer {
 	private boolean isAmountNotDouble;
 	private boolean isDataValid;
 	//*
-	/**
+	/*
 	 * Launch the application.
+	 * @param window the view associated with a given controller
 	 */
 	public void createMainWindow(MainWindow window) {
 		
@@ -63,113 +64,86 @@ public class MainWindow implements Observer {
 		});
 	}
 
-	/**
-	 * Create the application.
+	/*
+	 * Create the application view
+	 * @param appController the controller module for the MVC
 	 */
 	public MainWindow(AppController appController) {
 		this.appController = appController; 
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
+	/*
+	 * Initialize the contents of the Jframe for the view.
 	 */
 	private void initialize() {
 		
-		/**create JFrame ExpenseList
-		 * 
-		 */
+	
 		ExpenseListFrame = new JFrame();
 		ExpenseListFrame.setBounds(100, 100, 800, 600);
 		ExpenseListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ExpenseListFrame.getContentPane().setLayout(null);
 		
-		/**
-		 * Add Item Button
-		 */
+		
 		JButton btnAddItem = new JButton("Add Item");
 		btnAddItem.setBounds(10, 520, 120, 30);
 		ExpenseListFrame.getContentPane().add(btnAddItem);
 
-		/**Delete Item Button
-		 * 
-		 */
+		
 		JButton btnDeleteItem = new JButton("Delete Item");
 		btnDeleteItem.setBounds(140, 520, 120, 30);
 		ExpenseListFrame.getContentPane().add(btnDeleteItem);
 
-		/**Edit Item Button
-		 * 
-		 */
+		
 		JButton btnEditItem = new JButton("Make Edit");
 		btnEditItem.setBounds(270, 520, 120, 30);
 		ExpenseListFrame.getContentPane().add(btnEditItem);
 
-		/**Mark Paid Button
-		 * 
-		 */
+		
 		JButton btnMarkPaid = new JButton("Make as Paid");
 		btnMarkPaid.setBounds(400, 520, 120, 30);
 		ExpenseListFrame.getContentPane().add(btnMarkPaid);
 
-		/**
-		 *Text field to enter expense name
-		 */
+
 		this.expenseNameField = new JTextField();
 		this.expenseNameField.setBounds(141, 47, 130, 26);
 		ExpenseListFrame.getContentPane().add(expenseNameField);
 		this.expenseNameField.setColumns(10);
 
-		/**
-		 * Text field to enter price of expense
-		 */
+	
 		this.priceField = new JTextField();
 		this.priceField.setBounds(141, 85, 130, 26);
 		ExpenseListFrame.getContentPane().add(priceField);
 		this.priceField.setColumns(10);
 		
-		/**
-		 * Label for expense textField
-		 */
+	
 		JLabel lblExpenseName = new JLabel("Expense Name");
 		lblExpenseName.setBounds(20, 52, 93, 16);
 		ExpenseListFrame.getContentPane().add(lblExpenseName);
-		//lblExpenseName.addActionListener(new ActionListener(){
-		//	public void action event
-		//}
 		
-		/**
-		 * Label for Amount textField
-		 */
+		
+	
 		JLabel lblAmount = new JLabel("Amount");
 		lblAmount.setBounds(20, 90, 61, 16);
 		ExpenseListFrame.getContentPane().add(lblAmount);
 
-		/**
-		 * Drop-down box
-		 */
+	
 		String[] categories = {"Purchase", "Bill"};
 		JComboBox comboBox = new JComboBox(categories);
 		comboBox.setBounds(141, 120, 130, 27);
 		ExpenseListFrame.getContentPane().add(comboBox);
 
-		/**
-		 * label for drop-down box
-		 */
+	
 		JLabel lblNewLabel = new JLabel("Category");
 		lblNewLabel.setBounds(20, 124, 61, 16);
 		ExpenseListFrame.getContentPane().add(lblNewLabel);
 
-		/**
-		 * expense paid checkbox
-		 */
+	
 		JCheckBox chckbxExpensePaid = new JCheckBox("Expense Paid");
 		chckbxExpensePaid.setBounds(89, 160, 128, 23);
 		ExpenseListFrame.getContentPane().add(chckbxExpensePaid);
 
-		/**
-		 * creation of JTable to hold expenses
-		 */
+	
 		String data[][]={};
 		String columnNames[]={"Name", "Price", "Type", "Paid"};
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
@@ -202,10 +176,7 @@ public class MainWindow implements Observer {
        
 		
 		
-		/**
-		 * listener to add item
-		 * @param add ExpenseName to JTable
-		 */
+	
 		btnAddItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent add) {
 				readExpenseName();
@@ -226,10 +197,7 @@ public class MainWindow implements Observer {
 			}
 		});
 
-		/**
-		 * listener to delete item
-		 * @param remove selectedRow from JTable
-		 */
+	
 		btnDeleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent del) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -243,10 +211,7 @@ public class MainWindow implements Observer {
 				}
 			}
 		});
-		/**
-		 * listener to edit item
-		 * @param Edit selectedRow
-		 */
+	
 		btnEditItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent edit) {
 				readExpenseName();
@@ -269,10 +234,7 @@ public class MainWindow implements Observer {
 			}
 		});
 		
-		/**
-		 * listener to mark item paid/unpaid
-		 * 
-		 */
+		
 		btnMarkPaid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent pay) {
 				
@@ -301,8 +263,10 @@ public class MainWindow implements Observer {
 
 
 
-	/**
-	 * @param updates content of Jtable
+	/*
+	 * @param updates content of Jtable implemented from Observer interface
+	 * @param arg0 the object being observed by this observer
+	 * @param arg1 ???
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -320,9 +284,9 @@ public class MainWindow implements Observer {
 		
 	}
 
-	/**
+	/*
 	 * make sure data entered is valid 
-	 * @param ExpenseName, Amount
+	 * 
 	 */
 	private void validationChecks() {
 		this.isDataValid = false;
@@ -352,9 +316,9 @@ public class MainWindow implements Observer {
 		}
 	}
 
-	/**
+	/*
 	 * readAmount
-	 * @param priceField
+	 * 
 	 */
 	private void readAmount(){
 		//if string is empty
@@ -374,7 +338,11 @@ public class MainWindow implements Observer {
 	}
 
 
-
+	/*
+	 * Validates whether the string is numeric
+	 * @param strNum the string to check if it is a number
+	 * 
+	 */
 	private boolean isNumeric(String strNum) {
 		return strNum.matches("-?\\d+(\\.\\d+)?");
 
