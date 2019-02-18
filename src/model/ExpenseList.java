@@ -82,9 +82,10 @@ public class ExpenseList extends Observable{
 		    		System.out.print(ex.amount + ", ");
 		    		System.out.print(ex.expenseType.toString() + ", ");
 		    		System.out.println(ex.paymentStatus);
-		    		System.out.println(); 
+		    		
 		    		
 		    	}
+		    	System.out.println(); 
 		    
 		    }
 	
