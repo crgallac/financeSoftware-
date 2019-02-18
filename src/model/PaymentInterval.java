@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * The interval of payment for recurring bills
+ * @version     1
+ * @since       1          
+ */
 public enum PaymentInterval {
 
 	DAILY, WEEKLY, MONTHLY, SEMIANNUALLY, ANNUALLY;
