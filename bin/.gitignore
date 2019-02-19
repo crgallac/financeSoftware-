@@ -1,4 +1,3 @@
-/view/
-/model/
-/main/
-/controller/
+/test_model/
+/test_controller/
+/test_view/
