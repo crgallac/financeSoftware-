@@ -9,17 +9,17 @@ package model;
 public class ExpenseFactory {
 	
 	
-	public AtomicExpense createExpense(ExpenseType expenseType) {
-		
-		
+	public Expenses createExpense(ExpenseType expenseType) {
+
+
 		switch(expenseType) {
-		case BILL: 
-				return new Bill(); 
-		case PURCHASE: 
-			return new Purchase(); 
-			
+			case BILL:
+				return new PeriodicExpense();
+			case PURCHASE:
+				return new SingleExpense();
+			case COMPOSITE:
+			return new CompositeExpenses();
 		}
-	
 		return null; 
 		
 		

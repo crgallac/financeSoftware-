@@ -3,22 +3,19 @@ package view;
 
 
 import java.awt.EventQueue;
-import java.awt.Label;
-import javax.swing.table.DefaultTableModel;
 
 import controller.AppController;
 import model.ExpenseType;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.awt.BorderLayout;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.*;
-import java.awt.event.*;
-
 
 
 /**
@@ -29,8 +26,15 @@ import java.awt.event.*;
 public class MainWindow implements Observer {
 
 	private  AppController appController; 
-	private DefaultTableModel model;
+	private Table model;
+	private SubTable subModel;
 	private JTable table;
+	private JTable subTable;
+	private int mainTableSelection=0;
+	private int rowInEditing=-1;
+	private boolean isCompsite=false;
+	private JScrollPane scrollPane;
+	private JScrollPane subScrollPane;
 	private JFrame ExpenseListFrame = new JFrame ("Expense Tracker");
 	private JTextField expenseNameField;
 	private JTextField priceField;
@@ -43,7 +47,13 @@ public class MainWindow implements Observer {
 	private boolean isAmountEmpty;
 	private boolean isAmountNotDouble;
 	private boolean isDataValid;
-	
+	private JComboBox comboBox;
+	private Button btnOpenItem;
+	private Button btnBack;
+	private TableColumn colPaidMain;
+	private TableColumn colPaidSub;
+
+	String[] mainCategories = {"Purchase", "Bill", "Subcategory"};
 	/*
 	 * Launch the application.
 	 * @param window the view associated with a given controller
@@ -82,15 +92,25 @@ public class MainWindow implements Observer {
 		ExpenseListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ExpenseListFrame.getContentPane().setLayout(null);
 
-		
+		JCheckBox hidePaid = new JCheckBox("Hide/Unhide Paid");
+		hidePaid.setBounds(625, 20, 128, 23);
+		ExpenseListFrame.getContentPane().add(hidePaid);
+		hidePaid.setSelected(true);
+
 		JButton btnAddItem = new JButton("Add Item");
 		btnAddItem.setBounds(10, 520, 120, 30);
-
-
-
 		ExpenseListFrame.getContentPane().add(btnAddItem);
 
-		
+		JButton btnOpenItem = new JButton("Open Item");
+		btnOpenItem.setBounds(10, 470, 120, 30);
+		ExpenseListFrame.getContentPane().add(btnOpenItem);
+		btnOpenItem.setVisible(false);
+
+		JButton btnBack = new JButton("Back");
+		btnBack.setBounds(140, 470, 120, 30);
+		ExpenseListFrame.getContentPane().add(btnBack);
+		btnBack.setVisible(false);
+
 		JButton btnDeleteItem = new JButton("Delete Item");
 		btnDeleteItem.setBounds(140, 520, 120, 30);
 		ExpenseListFrame.getContentPane().add(btnDeleteItem);
@@ -116,8 +136,8 @@ public class MainWindow implements Observer {
 		this.priceField.setBounds(141, 85, 130, 26);
 		ExpenseListFrame.getContentPane().add(priceField);
 		this.priceField.setColumns(10);
-		
-	
+
+
 		JLabel lblExpenseName = new JLabel("Expense Name");
 		lblExpenseName.setBounds(20, 52, 93, 16);
 		ExpenseListFrame.getContentPane().add(lblExpenseName);
@@ -127,12 +147,10 @@ public class MainWindow implements Observer {
 		ExpenseListFrame.getContentPane().add(lblAmount);
 
 
-		String[] categories = {"Purchase", "Bill"};
 
-
-		JComboBox comboBox = new JComboBox(categories);
+		comboBox = new JComboBox(mainCategories);
 		comboBox.setBounds(141, 120, 130, 27);
-		ExpenseListFrame.getContentPane().add(comboBox);
+		ExpenseListFrame.add(this.comboBox);
 
 	
 		JLabel lblNewLabel = new JLabel("Category");
@@ -144,43 +162,93 @@ public class MainWindow implements Observer {
 		chckbxExpensePaid.setBounds(89, 160, 128, 23);
 		ExpenseListFrame.getContentPane().add(chckbxExpensePaid);
 
-	
-		String data[][]={};
-		String columnNames[]={"Name", "Price", "Type", "Paid"};
-		DefaultTableModel model = new DefaultTableModel(data, columnNames);
-		
-		JTable table = new JTable( model );
-		
+		//Table
+        model = new Table(appController);
+		table = new JTable( model );
+
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setBounds(300,50,400,400);
-		ExpenseListFrame.getContentPane().add(table);
 
-		
+		scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(300,50,400,400);
+		ExpenseListFrame.add(scrollPane);
+
 		table.setPreferredScrollableViewportSize(new Dimension(450,63));
         table.setFillsViewportHeight(true);
-        
+
+        //Sub Table
+		subModel = new SubTable(appController,-1);
+		subTable = new JTable( subModel );
+
+		subTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		subTable.setBounds(300,50,400,400);
+
+		subScrollPane = new JScrollPane(subTable);
+		subScrollPane.setBounds(300,50,400,400);
+		ExpenseListFrame.add(subScrollPane);
+
+		subTable.setPreferredScrollableViewportSize(new Dimension(450,63));
+		subTable.setFillsViewportHeight(true);
+		subScrollPane.setVisible(false);
         //Column labels
-        JLabel lblExpense = new JLabel("Expense");
-        lblExpense.setBounds(300, 32, 61, 16);
+        JLabel lblExpense = new JLabel("General Expense");
+        lblExpense.setBounds(300, 32, 200, 16);
         ExpenseListFrame.getContentPane().add(lblExpense);
-        
-        JLabel lblAmount_1 = new JLabel("Amount");
-        lblAmount_1.setBounds(400, 32, 61, 16);
-        ExpenseListFrame.getContentPane().add(lblAmount_1);
-        
-        JLabel lblCategory = new JLabel("Category");
-        lblCategory.setBounds(507, 32, 61, 16);
-        ExpenseListFrame.getContentPane().add(lblCategory);
-        
-        JLabel lblPaid = new JLabel("Paid?");
-        lblPaid.setBounds(619, 32, 61, 16);
-        ExpenseListFrame.getContentPane().add(lblPaid);
-       
-		
-		
-	
+
+		hidePaid.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				JCheckBox hidePaid = (JCheckBox) event.getSource();
+				if (hidePaid.isSelected()) {
+					table.addColumn(colPaidMain);
+					subTable.addColumn(colPaidSub);
+				} else {
+					colPaidMain= table.getColumnModel().getColumn(3);
+					colPaidSub= subTable.getColumnModel().getColumn(3);
+					subTable.removeColumn(colPaidSub);
+					table.removeColumn(colPaidMain);
+				}
+			}
+		});
 
 
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e){
+				if(table.getSelectedRow()> -1){
+					mainTableSelection=table.getSelectedRow();
+					//System.out.println(mainTableSelection);
+					String type=(model.getValueAt(mainTableSelection,2)).toString();
+					switch(type) {
+						case "COMPOSITE":{
+							isCompsite=true;
+							break;
+						}
+						default:isCompsite=false;
+					}
+					btnOpenItem.setVisible(isCompsite);
+					btnEditItem.setVisible(!isCompsite);
+				}
+			}
+		});
+
+
+		btnOpenItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent open) {
+				switchToComposite(mainTableSelection);
+				lblExpense.setText("Sub Expense");
+				btnOpenItem.setVisible(false);
+				btnBack.setVisible(true);
+				btnEditItem.setVisible(true);
+			}
+		});
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent open) {
+				switchToMain();
+				lblExpense.setText("General Expense");
+				btnBack.setVisible(false);
+			}
+		});
 
 		btnAddItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent add) {
@@ -189,14 +257,29 @@ public class MainWindow implements Observer {
 				type = (String) (comboBox.getSelectedItem());
 				validationChecks();
 				paid = chckbxExpensePaid.isSelected();
-				//System.out.println(expenseName+amount+type+paid);//debug:checking user input data in console
+				//System.out.println(rowInEditing);//debug:checking user input data in console
 
-				
 				if (isDataValid == true) {
-					
-					appController.add(expenseName, amount, ExpenseType.StringToType(type), paid);
-					DefaultTableModel model = (DefaultTableModel) table.getModel();
-					model.addRow(new Object[]{expenseName, amount,type,paid});
+					switch(rowInEditing){
+						case -1:{//in main table
+							switch(type) {
+								case "Subcategory":{
+									appController.addComposite(expenseName);
+									break;
+								}
+								default:appController.add(expenseName, amount, ExpenseType.StringToType(type), paid);
+							}
+							model.update(appController);
+						}
+						break;
+						default://in sub table
+						{
+							appController.addSub(rowInEditing,expenseName, amount, ExpenseType.StringToType(type), paid);
+							subModel.update(appController,rowInEditing);
+						}
+					}
+
+
 					
 				}
 			}
@@ -205,15 +288,31 @@ public class MainWindow implements Observer {
 	
 		btnDeleteItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent del) {
-				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				int rowToDel=table.getSelectedRow();
-				if(rowToDel<0){
-					JOptionPane.showMessageDialog(null, "No file is selected!");
+				int rowToDel;
+				switch (rowInEditing){
+					case -1:{
+						rowToDel=table.getSelectedRow();
+						if(rowToDel<0){
+							JOptionPane.showMessageDialog(null, "No file is selected!");
+						}
+						else {
+							appController.delete(rowToDel);
+							model.update(appController);
+						}
+						break;
+					}
+					default:{
+						rowToDel=subTable.getSelectedRow();
+						if(rowToDel<0){
+							JOptionPane.showMessageDialog(null, "No file is selected!");
+						}
+						else {
+							appController.deleteSub(rowToDel,rowInEditing);
+							subModel.update(appController,rowInEditing);
+						}
+					}
 				}
-				else {
-					appController.delete(rowToDel);
-					model.removeRow(rowToDel);
-				}
+
 			}
 		});
 
@@ -225,44 +324,70 @@ public class MainWindow implements Observer {
 				type = (String) (comboBox.getSelectedItem());
 				validationChecks();
 				paid = chckbxExpensePaid.isSelected();
-				
-				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				int rowToEdit=table.getSelectedRow();
-				if(rowToEdit<0){
-					JOptionPane.showMessageDialog(null, "No file is selected!");
+				int rowToEdit;
+				switch (rowInEditing){
+					case -1:{
+						rowToEdit=table.getSelectedRow();
+						if(rowToEdit<0){
+							JOptionPane.showMessageDialog(null, "No file is selected!");
+						}
+						else if(isDataValid == true){
+							appController.edit(rowToEdit, expenseName, amount, ExpenseType.StringToType(type), paid);
+
+							model.update(appController);
+						}
+						break;
+					}
+					default:{
+						rowToEdit=subTable.getSelectedRow();
+						if(rowToEdit<0){
+							JOptionPane.showMessageDialog(null, "No file is selected!");
+						}
+						else if(isDataValid == true){
+							appController.editSub(rowToEdit,rowInEditing, expenseName, amount, ExpenseType.StringToType(type), paid);
+							subModel.update(appController,rowInEditing);
+						}
+					}
 				}
-				else if(isDataValid == true){
-					appController.edit(rowToEdit, expenseName, amount, ExpenseType.StringToType(type), paid);
-					
-					model.removeRow(rowToEdit);
-					model.insertRow(rowToEdit,  new Object[]{appController.getExpenseList().getByRow(rowToEdit).getExpenseName(), appController.getExpenseList().getByRow(rowToEdit).getAmount(),ExpenseType.TypeToString(appController.getExpenseList().getByRow(rowToEdit).getExpenseType()),appController.getExpenseList().getByRow(rowToEdit).getPaymentStatus()});
-				}
+
 			}
 		});
 		
 		btnMarkPaid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent pay) {
-				
-				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				int rowToEdit=table.getSelectedRow();
-				if(rowToEdit<0){
-					JOptionPane.showMessageDialog(null, "No file is selected!");
-				}
-				else if(isDataValid == true){
-					
-					if(!(appController.getExpenseList().getByRow(rowToEdit).getPaymentStatus())){
-					appController.markPaid(rowToEdit);
-					}else {
-					appController.unMarkPaid(rowToEdit);	
+				int rowToEdit;
+					switch (rowInEditing){
+						case -1:{
+							rowToEdit=table.getSelectedRow();
+							if(rowToEdit<0){
+								JOptionPane.showMessageDialog(null, "No file is selected!");
+							}
+							else if(isDataValid == true) {
+								if (!(appController.getExpenseList().getByRow(rowToEdit).getPaymentStatus())) {
+									appController.markPaid(rowToEdit,true);
+								} else {
+									appController.markPaid(rowToEdit,false);
+								}
+								model.update(appController);
+								break;
+							}
+						}
+						default:{
+							rowToEdit=subTable.getSelectedRow();
+							if(rowToEdit<0){
+								JOptionPane.showMessageDialog(null, "No file is selected!");
+							}
+							else if(isDataValid == true) {
+								if (!appController.getExpenseList().getByRow(rowInEditing).toCompositeExpenses().getByRow(rowToEdit).getPaymentStatus()){
+									appController.markPaidSub(rowInEditing,rowToEdit,true);
+								} else {
+									appController.markPaidSub(rowInEditing,rowToEdit,false);
+								}
+								subModel.update(appController,rowInEditing);
+							}
+						}
 					}
-					
-					model.removeRow(rowToEdit);
-//				
-					model.insertRow(rowToEdit, new Object[]{appController.getExpenseList().getByRow(rowToEdit).getExpenseName(), appController.getExpenseList().getByRow(rowToEdit).getAmount(),ExpenseType.TypeToString(appController.getExpenseList().getByRow(rowToEdit).getExpenseType()),appController.getExpenseList().getByRow(rowToEdit).getPaymentStatus()});
-
-
 				}
-			}
 		});
 
 	}
@@ -280,13 +405,12 @@ public class MainWindow implements Observer {
 
 		
 		SwingUtilities.updateComponentTreeUI(ExpenseListFrame);
-		
 		ExpenseListFrame.invalidate();
 		ExpenseListFrame.validate();
 		ExpenseListFrame.repaint();
 		
 		
-		appController.getExpenseList().printList(); 
+		//appController.getExpenseList().printList();
 		
 		
 
@@ -359,6 +483,24 @@ public class MainWindow implements Observer {
 		return strNum.matches("-?\\d+(\\.\\d+)?");
 
 	}
+
+	private void switchToComposite(int rowID){
+		comboBox.removeItem("Subcategory");
+		subScrollPane.setVisible(true);
+		scrollPane.setVisible(false);
+		subModel.update(appController,rowID);
+		rowInEditing=rowID;
+
+
+	}
+	private void switchToMain(){
+		comboBox.addItem("Subcategory");
+
+		subScrollPane.setVisible(false);
+		scrollPane.setVisible(true);
+		model.update(appController);
+		rowInEditing=-1;
+   	}
 }
 
 

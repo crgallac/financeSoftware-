@@ -1,6 +1,8 @@
 package model;
 
 
+import java.util.ArrayList;
+
 /**
  * An interface for the atomic expense elements that make up the list of expenses.
  * @version     1
@@ -107,7 +109,6 @@ public abstract class AtomicExpense {
 	public PaymentType getPaymentType() {
 		return paymentType; 
 	}
-	
 
 
 	
