@@ -7,22 +7,21 @@ package model;
  */
 public enum ExpenseType {
 	
-	BILL, PURCHASE; 
+	BILL, PURCHASE, COMPOSITE;
 	
 	 /* Converts a String to an Expense Type
 	  * @param type the type of the expense 
 	 * @return the enumerated equivalent type of the expense
 	 */
 	public static ExpenseType StringToType(String type){
-		
 		switch(type) {
-		
-		case "Purchase":
-			return  ExpenseType.PURCHASE; 
-			
-		case "Bill": 
-			return ExpenseType.BILL; 
-		
+			case "Subcategory":
+				return ExpenseType.COMPOSITE;
+			case "Purchase":
+				return  ExpenseType.PURCHASE;
+			case "Bill":
+				return ExpenseType.BILL;
+
 		}
 		
 		return null; 
@@ -36,13 +35,12 @@ public enum ExpenseType {
 	public static String TypeToString(ExpenseType exT){
 		
 		switch(exT) {
-		
-		case BILL: 
-			return  "Bill"; 
-			
-		case PURCHASE: 
-			return "Purchase"; 
-		
+			case COMPOSITE:
+				return  "Subcategory";
+			case BILL:
+				return  "Bill";
+			case PURCHASE:
+				return "Purchase";
 		}
 		
 		return ""; 

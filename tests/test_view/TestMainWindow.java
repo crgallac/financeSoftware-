@@ -97,11 +97,11 @@ ac.add(name, amount, type, paid);
 		ac= new AppController();
 		ac.add(name, amount, type, paid);
 		
-		ac.unMarkPaid(0);
+		ac.markPaid(0,true);
 		
 		assertEquals(ac.getExpenseList().getExpenseList().get(0).getPaymentStatus(), false); 
 
-		ac.markPaid(0);
+		ac.markPaid(0,true);
 		assertEquals(ac.getExpenseList().getExpenseList().get(0).getPaymentStatus(), true); 
 
 		
