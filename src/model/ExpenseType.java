@@ -15,7 +15,7 @@ public enum ExpenseType {
 	 */
 	public static ExpenseType StringToType(String type){
 		switch(type) {
-			case "Subcategory":
+			case "Compound":
 				return ExpenseType.COMPOSITE;
 			case "Purchase":
 				return  ExpenseType.PURCHASE;
@@ -36,7 +36,7 @@ public enum ExpenseType {
 		
 		switch(exT) {
 			case COMPOSITE:
-				return  "Subcategory";
+				return  "Compound";
 			case BILL:
 				return  "Bill";
 			case PURCHASE:

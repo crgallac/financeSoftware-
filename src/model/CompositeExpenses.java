@@ -4,25 +4,26 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 public class CompositeExpenses  extends Observable implements Expenses{
-    private MainExpenseList expenseList;
+    private ExpenseList expenseSubList;
     private String expenseName;
     private ExpenseType expenseType;
+ 
 
     public CompositeExpenses() {
-        expenseList = new MainExpenseList();
+    	expenseSubList = new ExpenseList();
         this.expenseType = ExpenseType.COMPOSITE;
     }
-    public int size(){
-        return expenseList.getSize();
+    public Integer size(){
+        return expenseSubList.getSize();
     }
     public void add(Expenses expense){
-        this.expenseList.add(expense);
+        this.expenseSubList.add(expense);
         this.setChanged();
         this.notifyObservers(this);
     }
 
     public void setByRow(int rowId,Expenses expense){
-        this.expenseList.setByRow(rowId,expense);
+        this.expenseSubList.setByRow(rowId,expense);
         this.setChanged();
         this.notifyObservers(this);
     }
@@ -36,24 +37,25 @@ public class CompositeExpenses  extends Observable implements Expenses{
      * @return void
      * set row by row
      */
-    public void setPaid(boolean paymentStatus){
-        for (int i = 0; i < expenseList.getSize(); i++) {
-            expenseList.getByRow(i).setPaid(paymentStatus);
+    public void setPaid(Boolean paymentStatus){
+        for (int i = 0; i < expenseSubList.getSize(); i++) {
+        	expenseSubList.getByRow(i).setPaid(paymentStatus);
         }
+        
         this.setChanged();
         this.notifyObservers(this);
     }
-    public MainExpenseList getSubList(){
-        return this.expenseList;
+    public ExpenseList getSubList(){
+        return this.expenseSubList;
     }
 
     public Expenses getByRow(int rowId){
-        return this.expenseList.getByRow(rowId);
+        return this.expenseSubList.getByRow(rowId);
     }
 
 
     public void deleteByRow(int rowId){
-        this.expenseList.deleteByRow(rowId);
+        this.expenseSubList.deleteByRow(rowId);
         this.setChanged();
         this.notifyObservers(this);
     }
@@ -62,17 +64,17 @@ public class CompositeExpenses  extends Observable implements Expenses{
      * overwrite getAmount method
      * @return the total amount of the expense
      */
-    public double getAmount(){
+    public Double getAmount(){
         double sum=0;
-        for (int i = 0; i < expenseList.getSize(); i++) {
-            sum+=expenseList.getByRow(i).getAmount();
+        for (int i = 0; i < expenseSubList.getSize(); i++) {
+            sum+=expenseSubList.getByRow(i).getAmount();
         }
 
             return sum;
     }
 
     @Override
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         //override a useless method, a Composite Expenses can't write total amount.
     }
 
@@ -82,10 +84,10 @@ public class CompositeExpenses  extends Observable implements Expenses{
      * @return the sum of the PaymentStatus
      * if one is not paid, it is not paid
      */
-    public boolean getPaymentStatus(){
+    public Boolean getPaymentStatus(){
         boolean sumStatus = true;
-        for (int i = 0; i < expenseList.getSize(); i++) {
-            sumStatus&=expenseList.getByRow(i).getPaymentStatus();
+        for (int i = 0; i < expenseSubList.getSize(); i++) {
+            sumStatus&=expenseSubList.getByRow(i).getPaymentStatus();
         }
         return sumStatus;
     }
@@ -93,7 +95,7 @@ public class CompositeExpenses  extends Observable implements Expenses{
     @Override
     public CompositeExpenses toCompositeExpenses() {
         return this;
-    }
+}
 
     public String getExpenseName() {
         return expenseName;

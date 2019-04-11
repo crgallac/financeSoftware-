@@ -16,20 +16,25 @@ public interface Expenses {
      * @return void
      */
 
-    void setPaid(boolean paymentStatus);
+    void setPaid(Boolean paymentStatus);
     /* Sets the date of the expense
      * @param  dateOfExpense sets the date at which the expense is to be paid
      * @return void
      */
-    double getAmount();
+    Double getAmount();
 
-
+    
+    /* Sets the date of the expense
+     * @param  dateOfExpense sets the date at which the expense is to be paid
+     * @return void
+     */
+    Integer size();
 
     /* Gets the Expense Type of the expense
      *
      * @return one time purchase or recurring bill
      */
-    void setAmount(double amount);
+    void setAmount(Double amount);
 
     ExpenseType getExpenseType();
 
@@ -37,7 +42,7 @@ public interface Expenses {
      *
      * @return payment status true if paid false if unpaid
      */
-    boolean getPaymentStatus();
+    Boolean getPaymentStatus();
 
     CompositeExpenses toCompositeExpenses();
 }

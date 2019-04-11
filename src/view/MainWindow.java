@@ -36,13 +36,16 @@ public class MainWindow implements Observer {
 	private JScrollPane scrollPane;
 	private JScrollPane subScrollPane;
 	private JFrame ExpenseListFrame = new JFrame ("Expense Tracker");
+	private JTextField fileNameField; 
 	private JTextField expenseNameField;
 	private JTextField priceField;
+	private String fileName; 
 	private String expenseName;
 	private double amount;
 	private String type;
 	private boolean paid;
 	// *this part is to check errors from user input
+	private boolean isFileNameEmpty;
 	private boolean isExpenseNameEmpty;
 	private boolean isAmountEmpty;
 	private boolean isAmountNotDouble;
@@ -53,7 +56,7 @@ public class MainWindow implements Observer {
 	private TableColumn colPaidMain;
 	private TableColumn colPaidSub;
 
-	String[] mainCategories = {"Purchase", "Bill", "Subcategory"};
+	String[] mainCategories = {"Purchase", "Bill", "Compound"};
 	/*
 	 * Launch the application.
 	 * @param window the view associated with a given controller
@@ -121,10 +124,26 @@ public class MainWindow implements Observer {
 		ExpenseListFrame.getContentPane().add(btnEditItem);
 
 		
-		JButton btnMarkPaid = new JButton("Make as Paid");
+		JButton btnMarkPaid = new JButton("Mark as Paid");
 		btnMarkPaid.setBounds(400, 520, 120, 30);
 		ExpenseListFrame.getContentPane().add(btnMarkPaid);
+		
+		
+		this.fileNameField = new JTextField();
+		this.fileNameField.setBounds(570, 525, 210, 26);
+		ExpenseListFrame.getContentPane().add(fileNameField);
+		this.fileNameField.setColumns(10);
 
+		
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(660, 455, 120, 30);
+		ExpenseListFrame.getContentPane().add(btnSave);
+
+		JButton btnLoad = new JButton("Load");
+		btnLoad.setBounds(660, 490, 120, 30);
+		ExpenseListFrame.getContentPane().add(btnLoad);
+		
+		
 
 		this.expenseNameField = new JTextField();
 		this.expenseNameField.setBounds(141, 47, 130, 26);
@@ -243,10 +262,46 @@ public class MainWindow implements Observer {
 			}
 		});
 		btnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent open) {
+			public void actionPerformed(ActionEvent back) {
 				switchToMain();
 				lblExpense.setText("General Expense");
 				btnBack.setVisible(false);
+				
+			}
+		});
+		
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent save) {
+				readFileName();
+				validationChecks();
+				
+				if(isDataValid) {
+//				appController.getExpenseList().save(fileName);
+				
+				appController.connectToDataBase(); 
+				appController.push(fileName); 
+				appController.disconnectFromDataBase(); 
+				
+//				System.out.println("saved");
+				}
+			}
+		});
+		
+		btnLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent load) {
+				readFileName();
+				validationChecks();
+		
+				if(isDataValid) {
+					appController.connectToDataBase(); 
+					appController.pull(fileName); 
+					appController.disconnectFromDataBase(); 
+					
+//					getExpenseList().read(fileName);
+					
+//					System.out.println("saved");
+					model.update(appController);
+					}
 			}
 		});
 
@@ -263,7 +318,7 @@ public class MainWindow implements Observer {
 					switch(rowInEditing){
 						case -1:{//in main table
 							switch(type) {
-								case "Subcategory":{
+								case "Compound":{
 									appController.addComposite(expenseName);
 									break;
 								}
@@ -410,7 +465,12 @@ public class MainWindow implements Observer {
 		ExpenseListFrame.repaint();
 		
 		
-		//appController.getExpenseList().printList();
+		
+//		System.out.println("here"); 
+
+		
+//		appController.getExpenseList().printList();
+//		appController.getExpenseList().save("");
 		
 		
 
@@ -434,7 +494,10 @@ public class MainWindow implements Observer {
 		if (isAmountNotDouble == true) {
 			warningMessage = warningMessage + "Please ensure that the price field is a number\n";
 		}
-		if (isExpenseNameEmpty || isAmountEmpty || isAmountNotDouble) {
+		if (isFileNameEmpty == true) {
+			warningMessage = warningMessage + "Please ensure that the file field is correct\n";
+		}
+		if (isExpenseNameEmpty || isAmountEmpty || isAmountNotDouble || isFileNameEmpty) {
 			JOptionPane.showMessageDialog(null, warningMessage);
 		} else {
 			this.isDataValid = true;
@@ -471,6 +534,20 @@ public class MainWindow implements Observer {
 		}
 	}
 
+	/*
+	 * readAmount
+	 * 
+	 */
+	private void readFileName(){
+		
+		if(fileNameField.getText().length()==0){
+			isFileNameEmpty=true;
+		}
+		else {
+			isFileNameEmpty=false;
+			fileName=fileNameField.getText();
+		}
+	}
 
 
 	/*
@@ -485,7 +562,7 @@ public class MainWindow implements Observer {
 	}
 
 	private void switchToComposite(int rowID){
-		comboBox.removeItem("Subcategory");
+		comboBox.removeItem("Compound");
 		subScrollPane.setVisible(true);
 		scrollPane.setVisible(false);
 		subModel.update(appController,rowID);
@@ -494,7 +571,7 @@ public class MainWindow implements Observer {
 
 	}
 	private void switchToMain(){
-		comboBox.addItem("Subcategory");
+		comboBox.addItem("Compound");
 
 		subScrollPane.setVisible(false);
 		scrollPane.setVisible(true);

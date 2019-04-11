@@ -10,13 +10,13 @@ import view.*;
 
 
 public class AppController{
-    private MainExpenseList expenseData;
+    private ExpenseList expenseData;
     private ExpenseFactory expenseFactory; 
     private MainWindow view;  
 
     public AppController() {
     	
-    	expenseData = new MainExpenseList();
+    	expenseData = new ExpenseList();
     	expenseFactory = new ExpenseFactory(); 
     	view  = new MainWindow(this);
     	
@@ -113,8 +113,37 @@ public class AppController{
     }
     
     //for window 2, put all data together to form a unit of expense, then add it to the list
-    public MainExpenseList getExpenseList(){
+    public ExpenseList getExpenseList(){
 
     	return this.expenseData;
     }
+    
+    public void connectToDataBase() {
+    	
+    	//USE HTTP to establish connection between client and server 
+    	
+    }
+    
+    
+    public void disconnectFromDataBase() {
+    	
+    	//Disconnect after data is transferred. 
+    	
+    }
+    
+    
+    public void push(String path) {
+    	//Set up server with cURL and use http to transfer the data 
+    	//SET REQUEST 
+    	this.getExpenseList().save(path);
+		 
+    }
+    
+    public void pull(String path) {
+    	//Set up server with cURL and use http to transfer the data 
+    	//GET REQUEST 
+		 this.getExpenseList().read(path);
+    }
+    
+    
 }
