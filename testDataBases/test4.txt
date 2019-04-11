@@ -1,0 +1,16 @@
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+BILL,afeaae,1.0,false,0
+BILL,afeaae,1.0,false,0
+COMPOSITE,afeaae,0.0,true,0
+COMPOSITE,afeaae,4.0,false,4
+BILL,afeaae,1.0,false,0
+BILL,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+COMPOSITE,afeaae,0.0,true,0
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0

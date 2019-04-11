@@ -1,0 +1,4 @@
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+PURCHASE,afeaae,1.0,false,0
+BILL,afeaae,1.0,false,0
