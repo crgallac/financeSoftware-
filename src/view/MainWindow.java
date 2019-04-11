@@ -129,7 +129,7 @@ public class MainWindow implements Observer {
 		ExpenseListFrame.getContentPane().add(btnMarkPaid);
 		
 		
-		this.fileNameField = new JTextField();
+		this.fileNameField = new JTextField("dataBaseTest.xml");
 		this.fileNameField.setBounds(570, 525, 210, 26);
 		ExpenseListFrame.getContentPane().add(fileNameField);
 		this.fileNameField.setColumns(10);
